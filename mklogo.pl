@@ -10,7 +10,8 @@ my @TRACKS;
 open I,'<','tracks.data' or die "$?: $!";
 while (<I>) {
     chomp;
-    push @TRACKS,$_;
+    my ($f) = split(/\//,$_);
+    push @TRACKS,$f;
 }
 close I;
 open O,'>','logos-fp.tex' or die "$?: $!";
