@@ -8,7 +8,6 @@
 \usepackage{array}
 \inputencoding{latin1}
 \usepackage[absolute,showboxes]{textpos}
-%\usepackage[colorgrid,texcoord]{eso-pic}[2002/11/16]
 
 %\usepackage[absolute]{textpos}
 \usepackage[]{eso-pic}[2002/11/16]
@@ -29,19 +28,24 @@
 \fontfamily{phv}\selectfont
 \textblockorigin{0cm}{0cm}
 
-
 \newlength{\Logo}
-\setlength{\Logo}{210mm}
-\begin{textblock*}{\Logo}(0mm,0mm)%
+\setlength{\Logo}{210mm-60mm}
+\begin{textblock*}{\Logo}(30mm,30mm)%
 \includegraphics[width=\Logo]{pcars-main.png}
 \end{textblock*}
 
-\setlength{\Logo}{30mm}
- 
+\begin{textblock*}{\Logo}(30mm,150mm)%
+\begin{center}\Huge{pCars Tracks 21. May 2015}\end{center}
+\end{textblock*}
+
+\begin{textblock*}{\Logo}(30mm,165mm)%
+\begin{center}\tt\large{https://github.com/wwwutz/pCars-Tracks}\end{center}
+\end{textblock*}
+
+
 \include{logos-fp};
 
 %\null\newpage
-%\Huge{TRACKS}
 
 
 
