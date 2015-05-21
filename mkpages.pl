@@ -1,4 +1,5 @@
 #!/usr/bin/perl -w
+use strict;
 use Data::Dumper;
 
 my $x = 0;
@@ -7,18 +8,28 @@ my $dx = 256;
 my $dy = 256;
 
 my @LOCATIONS;
+my $TRACKS;
 open I,'<','tracks.data' or die "$?: $!";
+my $loc = '';
 while (<I>) {
-    /^\-/ and next; # skip tracks
     /^\s*$/ and next;
-    chomp;
     
-    my ($f) = split(/\//,$_);
-    push @LOCATIONS,$f;
+    chomp;
+    if (/^\-(.*)/) {
+      my ($f,$name,$type,$length,$turns,$year) = split(/\//,$1);
+      $TRACKS->{$loc}->{$name}{img} = $f;
+    }
+    else {
+      my ($f,$location,$country) = split(/\//,$_);
+      push @LOCATIONS,$f;
+      $loc = $f;
+    }
 }
 close I;
+print Dumper(\$TRACKS);
 
 @LOCATIONS = sort { rand(1) > 0.5 } @LOCATIONS;
+print Dumper(\@LOCATIONS);
 
 for ( my $i=0; $i < @LOCATIONS; $i++) {
   my $j = rand(@LOCATIONS);
@@ -47,9 +58,21 @@ while(<DATA>) {
   }
   $y += $dy;
 }
-
 close O;
+#
+# pages
+#
 
+open O,'>','all-tracks.tex' or die "$?:$!";
+for my $loc (@LOCATIONS) {
+  for my $track ( keys %{$TRACKS->{$loc}} ) {
+    print O '\null\newpage'."\n";
+    print O '\begin{textblock*}{30mm}(0mm,0mm)%'."\n";
+    print O '\includegraphics[width=120mm]{TR/'.$TRACKS->{$loc}->{$track}->{img}."}\n";
+    print O '\end{textblock*}'."\n";
+  }
+}
+close O;
 exit;
 
 sub incgra {
