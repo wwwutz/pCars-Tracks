@@ -6,10 +6,11 @@
 \pagestyle{empty}
 \usepackage[utf8]{inputenc}
 \usepackage{array}
-\inputencoding{latin1}
-\usepackage[absolute,showboxes]{textpos}
+\inputencoding{utf8}
+%\usepackage[absolute,showboxes]{textpos}
+\usepackage[absolute]{textpos}
+\usepackage{amssymb}
 
-%\usepackage[absolute]{textpos}
 \usepackage[]{eso-pic}[2002/11/16]
 
 \usepackage{fancybox} % fuer Oval...
@@ -30,20 +31,20 @@
 
 \newlength{\Logo}
 \setlength{\Logo}{210mm-60mm}
-\begin{textblock*}{\Logo}(30mm,30mm)%
+\begin{textblock*}{\Logo}(30mm,10mm)%
 \includegraphics[width=\Logo]{pcars-main.png}
 \end{textblock*}
 
-\begin{textblock*}{\Logo}(30mm,140mm)%
+\begin{textblock*}{\Logo}(30mm,125mm)%
 \begin{center}\Huge{Project CARS Tracks}\end{center}
 \end{textblock*}
 
-\begin{textblock*}{\Logo}(30mm,155mm)%
-\begin{center}\large{22. May 2015}\end{center}
+\begin{textblock*}{90mm}(120mm,275mm)%
+\begin{center}\Huge{22. May 2015}\end{center}
 \end{textblock*}
 
-\begin{textblock*}{\Logo}(30mm,167mm)%
-\begin{center}\tt\large{https://github.com/wwwutz/pCars-Tracks}\end{center}
+\begin{textblock*}{90mm}(0mm,275mm)%
+\begin{center}\tt{https://github.com/wwwutz/pCars-Tracks}\end{center}
 \end{textblock*}
 
 \include{logos-fp}
