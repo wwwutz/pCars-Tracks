@@ -14,27 +14,26 @@ open I,'<','tracks.data' or die "$?: $!";
 my $loc = '';
 my $lc = 0;
 while (<I>) {
-    /^\s*$/ and next;
-    
     chomp;
+    /^\s*$/ and next;
     if (/^\-(.*)/) {
-      my ($f,$name,@r) = split(/\//,$1);
-      map { $TRACKS->{$loc}->{$name}->{$_} = shift @r } qw( type miles turns year );
-      $TRACKS->{$loc}->{$name}{img} = $f;
-      my ($l) = $TRACKS->{$loc}->{$name}->{miles} =~ m/(\d+\.\d+)/;
-      $TRACKS->{$loc}->{$name}->{km} = sprintf("%0.2f",$l * 1.609344);
-      $TRACKS->{$loc}->{$name}->{mi} = sprintf("%0.2f",$l);
+      my ($f,$trackid,@r) = split(/\//,$1);
+      map { $TRACKS->{$loc}->{$trackid}->{$_} = shift @r } qw( name type miles turns year );
+      $TRACKS->{$loc}->{$trackid}{img} = $f;
+      my ($l) = $TRACKS->{$loc}->{$trackid}->{miles} =~ m/(\d+\.\d+)/;
+      $TRACKS->{$loc}->{$trackid}->{km} = sprintf("%0.2f",$l * 1.609344);
+      $TRACKS->{$loc}->{$trackid}->{mi} = sprintf("%0.2f",$l);
     }
     else {
-      my ($f,$location,$country) = split(/\//,$_);
+      my ($f,$nada,$location,$country) = split(/\//,$_);
       $LOCATIONS->{$location}->{img} = $f;
       $LOCATIONS->{$location}->{country} = $country;
       $lc++;
+#      if ( $location eq '' ) {print "\n[[$.:$_]]\n"};
       $loc = $location;
     }
 }
 close I;
-print Dumper(\$TRACKS);
 
 # @LOCATIONS = sort { rand(1) > 0.5 } @LOCATIONS;
 my @LOCATIONS = sort { rand(1) > 0.5 } keys %{$LOCATIONS};
@@ -47,8 +46,8 @@ for ( my $i=0; $i < @LOCATIONS; $i++) {
   my ($a,$b) = ( $LOCATIONS[$i], $LOCATIONS[$j] );
   ( $LOCATIONS[$i], $LOCATIONS[$j] ) = ( $b, $a );
 }
-print "XXX\n";
-print Dumper(\@LOCATIONS);
+#print "XXX\n";
+#print Dumper(\@LOCATIONS);
 
 open O,'>','logos-fp.tex' or die "$?: $!";
 
@@ -87,7 +86,8 @@ my ($x1,$y1) = (15,15);
 my $printlogo = 1;
 for my $loc (sort @LOCATIONS) {
   my $printlogo = 1;
-  for my $track ( sort keys %{$TRACKS->{$loc}} ) {
+  for my $trackid ( sort keys %{$TRACKS->{$loc}} ) {
+    my $track = $TRACKS->{$loc}->{$trackid}->{name};
     if (++$r >= 3 ) {
       print O "\\null\\newpage\n\n";
       $r = $c = 0;
@@ -103,15 +103,16 @@ for my $loc (sort @LOCATIONS) {
     }
     $c = 1;
     printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$bs,( $x1 + 70 ),($y1 + $r * 90 );
-    printf O "\\includegraphics[width=%dmm]{TR/%s}\n",$bs,$TRACKS->{$loc}->{$track}->{img};
+    printf O "\\includegraphics[width=%dmm]{TR/%s}\n",$bs,$TRACKS->{$loc}->{$trackid}->{img};
     printf O "\\centerline{%s}\n",$track;
+    printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
     print  O "\\end{textblock*}\n";
     printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",30,( $x1 + 70 + $bs +5 ),($y1 + $r * 90 );
-    printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$track}->{type}};
+    printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
     print  O "\\Large\n";
-    printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$track}->{mi};
-    printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$track}->{km};
-    printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$track}->{turns};
+    printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
+    printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
+    printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
     print  O "\\end{textblock*}\n";
   }
 }
