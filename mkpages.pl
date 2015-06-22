@@ -18,11 +18,12 @@ while (<I>) {
     /^\s*$/ and next;
     if (/^\-(.*)/) {
       my ($f,$trackid,@r) = split(/\//,$1);
-      map { $TRACKS->{$loc}->{$trackid}->{$_} = shift @r } qw( name type miles turns year );
+      map { $TRACKS->{$loc}->{$trackid}->{$_} = shift @r } qw( name type miles turns year size );
       $TRACKS->{$loc}->{$trackid}{img} = $f;
       my ($l) = $TRACKS->{$loc}->{$trackid}->{miles} =~ m/(\d+\.\d+)/;
       $TRACKS->{$loc}->{$trackid}->{km} = sprintf("%0.2f",$l * 1.609344);
       $TRACKS->{$loc}->{$trackid}->{mi} = sprintf("%0.2f",$l);
+      die "$_" unless defined($TRACKS->{$loc}->{$trackid}->{size});
     }
     else {
       my ($f,$nada,$location,$country) = split(/\//,$_);
@@ -88,32 +89,57 @@ for my $loc (sort @LOCATIONS) {
   my $printlogo = 1;
   for my $trackid ( sort keys %{$TRACKS->{$loc}} ) {
     my $track = $TRACKS->{$loc}->{$trackid}->{name};
-    if (++$r >= 3 ) {
-      print O "\\null\\newpage\n\n";
-      $r = $c = 0;
-      $printlogo = 1;
+    if ( $TRACKS->{$loc}->{$trackid}->{size} >= 2 ) {
+        print O "\\null\\newpage\n\n";
+        $r = $c = 0;
+        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",50, $x1 ,($y1 + $r * 90 );;
+        printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
+        printf O "\\par %s\\\\ %s\n",$loc,$LOCATIONS->{$loc}->{country};
+        print  O "\\end{textblock*}\n";
+        
+        my $wd = 185; my $ht = 200;
+        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$wd,( $x1 ),($y1 +65 );
+        printf O "\\fbox{\\includegraphics[width=%dmm,height=%dmm,keepaspectratio]{PT/%s.pdf}}\n", $wd, $ht, $trackid;
+        print  O "\\end{textblock*}\n";
+        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",40,( $x1 + 60 + $bs +5 ),($y1 + $r * 90 );
+        printf O "%s\n",$track;
+        printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
+        print  O "\\Large\n";
+        printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
+        printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
+        printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
+        printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
+        print  O "\\end{textblock*}\n";
+        $r = 3;  
     }
-    if ($printlogo) {
-      $c = 0;
-      printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",60, $x1 ,($y1 + $r * 90 );;
-      printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
-      printf O "\\par %s\\\\ %s\n",$loc,$LOCATIONS->{$loc}->{country};
-      print  O "\\end{textblock*}\n";
-      $printlogo = 0;
+    else {
+        
+        if (++$r >= 3 ) {
+          print O "\\null\\newpage\n\n";
+          $r = $c = 0;
+          $printlogo = 1;
+        }
+        if ($printlogo) {
+          printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",50, $x1 ,($y1 + $r * 90 );;
+          printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
+          printf O "\\par %s\\\\ %s\n",$loc,$LOCATIONS->{$loc}->{country};
+          print  O "\\end{textblock*}\n";
+          $printlogo = 0;
+        }
+        $c = 1;
+        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$bs,( $x1 + 60 ),($y1 + $r * 90 );
+        printf O "\\fbox{\\includegraphics[width=%dmm,height=%dmm,keepaspectratio]{PT/%s.pdf}}\n",$bs,$bs, $trackid;
+        print  O "\\end{textblock*}\n";
+        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",40,( $x1 + 60 + $bs +5 ),($y1 + $r * 90 );
+        printf O "%s\n",$track;
+        printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
+        print  O "\\Large\n";
+        printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
+        printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
+        printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
+        printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
+        print  O "\\end{textblock*}\n";
     }
-    $c = 1;
-    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$bs,( $x1 + 70 ),($y1 + $r * 90 );
-    printf O "\\includegraphics[width=%dmm]{TR/%s}\n",$bs,$TRACKS->{$loc}->{$trackid}->{img};
-    printf O "\\centerline{%s}\n",$track;
-    printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
-    print  O "\\end{textblock*}\n";
-    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",30,( $x1 + 70 + $bs +5 ),($y1 + $r * 90 );
-    printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
-    print  O "\\Large\n";
-    printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
-    printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
-    printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
-    print  O "\\end{textblock*}\n";
   }
 }
 close O;
