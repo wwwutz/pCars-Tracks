@@ -14,15 +14,26 @@ open I,'<','tracks.data' or die "$?: $!";
 my $loc = '';
 my $lc = 0;
 while (<I>) {
+   s/\015?\012/\n/g;
     chomp;
     /^\s*$/ and next;
     if (/^\-(.*)/) {
       my ($f,$trackid,@r) = split(/\//,$1);
       map { $TRACKS->{$loc}->{$trackid}->{$_} = shift @r } qw( name type miles turns year size );
       $TRACKS->{$loc}->{$trackid}{img} = $f;
-      my ($l) = $TRACKS->{$loc}->{$trackid}->{miles} =~ m/(\d+\.\d+)/;
-      $TRACKS->{$loc}->{$trackid}->{km} = sprintf("%0.2f",$l * 1.609344);
-      $TRACKS->{$loc}->{$trackid}->{mi} = sprintf("%0.2f",$l);
+      my ($l,$m) = $TRACKS->{$loc}->{$trackid}->{miles} =~ m/(\d+\.\d+)(m?)/;
+      my ( $km, $mi );
+      if ($m eq 'm') {
+        $mi = $l;
+        $km = $mi * 1.609344;
+      }
+      else {
+        $l = $l / 1000;
+        $km = $l;
+        $mi = $l / 1.609344;
+      }
+      $TRACKS->{$loc}->{$trackid}->{km} = sprintf("%0.2f",$km);
+      $TRACKS->{$loc}->{$trackid}->{mi} = sprintf("%0.2f",$mi);
       die "$_" unless defined($TRACKS->{$loc}->{$trackid}->{size});
     }
     else {
@@ -78,6 +89,7 @@ close O;
 my %TYPEMAP = (
  'C' => '\Huge$\circlearrowleft$',
  'P' => 'A $\rightsquigarrow$ B',
+ 'K' => '$\circledcirc\llcorner^{\rightthreetimes}\circledcirc$',
 );
 open O,'>','all-tracks.tex' or die "$?:$!";
 my $r = 3;
@@ -91,6 +103,9 @@ for my $loc (sort @LOCATIONS) {
     my $track = $TRACKS->{$loc}->{$trackid}->{name};
     if ( $TRACKS->{$loc}->{$trackid}->{size} >= 2 ) {
         print O "\\null\\newpage\n\n";
+#        print O "\\addtocontents{toc}{$track}\n";
+        # print O "\\addtocontents{toc}{~\hfill\textbf{Page}\par}\n";
+        print O "\\addcontentsline{toc}{chapter}{$track}\n";
         $r = $c = 0;
         printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",50, $x1 ,($y1 + $r * 90 );;
         printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
@@ -140,6 +155,13 @@ for my $loc (sort @LOCATIONS) {
         printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
         print  O "\\end{textblock*}\n";
     }
+    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",20,200,5;
+    printf O "\\fbox{\\thepage}\n";
+    print  O "\\end{textblock*}\n";
+    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",20,200,285;
+    printf O "\\fbox{\\thepage}\n";
+    print  O "\\end{textblock*}\n";
+
   }
 }
 close O;
@@ -162,9 +184,9 @@ x.....x
 x.....x
 x.....x
 x.....x
-.x.x.x.
+xx.x.xx
 x.x.x.x
-.x.x.x.
+xx.x.xx
 x.x.x.x
 
 
