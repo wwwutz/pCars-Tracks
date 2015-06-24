@@ -15,14 +15,20 @@
 
 \usepackage{fancybox} % fuer Oval...
 
+%
+% TOC stuff
+%
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+\usepackage{paralist}
+
 %\usepackage{showframe}
 
-\setlength{\tabcolsep}{0.2cm}
-\setlength{\topmargin}{1cm}
+\setlength{\textheight}{24cm}
+\addtolength{\headsep}{-1in}
+\addtolength{\textwidth}{2in}
+\addtolength{\oddsidemargin}{-1in}
+\addtolength{\evensidemargin}{-1in}
 \setlength{\parindent}{0pt}
-
-\newlength{\Rand}
-\setlength{\Rand}{\oddsidemargin + \hoffset + 1in}
 
 \begin{document}
 \fontfamily{phv}\selectfont
@@ -39,7 +45,7 @@
 \end{textblock*}
 
 \begin{textblock*}{90mm}(120mm,275mm)%
-\begin{center}\Huge{v2.0 / 22. Jun 2015}\end{center}
+\begin{center}\Huge{v2.1 / 24. Jun 2015}\end{center}
 \end{textblock*}
 
 \begin{textblock*}{90mm}(0mm,275mm)%
@@ -47,7 +53,8 @@
 \end{textblock*}
 
 \include{logos-fp}
+\null\newpage
+\include{all-toc}
 \include{all-tracks}
-
 
 \end{document}
