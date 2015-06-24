@@ -87,7 +87,7 @@ close O;
 # pages
 #
 my %TYPEMAP = (
- 'C' => '\Huge$\circlearrowleft$',
+ 'C' => '\huge$\circlearrowleft$',
  'P' => 'A $\rightsquigarrow$ B',
  'K' => '$\circledcirc\llcorner^{\rightthreetimes}\circledcirc$',
 );
@@ -95,75 +95,74 @@ open O,'>','all-tracks.tex' or die "$?:$!";
 my $r = 3;
 my $c = 0;
 my $bs = 80;
-my ($x1,$y1) = (15,15);
+my ($x1,$y1) = (15,10);
 my $printlogo = 1;
+my %PAGE;
+my $page=2; # page before tracks
 for my $loc (sort @LOCATIONS) {
   my $printlogo = 1;
   for my $trackid ( sort keys %{$TRACKS->{$loc}} ) {
     my $track = $TRACKS->{$loc}->{$trackid}->{name};
-    if ( $TRACKS->{$loc}->{$trackid}->{size} >= 2 ) {
-        print O "\\null\\newpage\n\n";
-#        print O "\\addtocontents{toc}{$track}\n";
-        # print O "\\addtocontents{toc}{~\hfill\textbf{Page}\par}\n";
-        print O "\\addcontentsline{toc}{chapter}{$track}\n";
-        $r = $c = 0;
-        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",50, $x1 ,($y1 + $r * 90 );;
-        printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
-        printf O "\\par %s\\\\ %s\n",$loc,$LOCATIONS->{$loc}->{country};
-        print  O "\\end{textblock*}\n";
-        
-        my $wd = 185; my $ht = 200;
-        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$wd,( $x1 ),($y1 +65 );
-        printf O "\\fbox{\\includegraphics[width=%dmm,height=%dmm,keepaspectratio]{PT/%s.pdf}}\n", $wd, $ht, $trackid;
-        print  O "\\end{textblock*}\n";
-        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",40,( $x1 + 60 + $bs +5 ),($y1 + $r * 90 );
-        printf O "%s\n",$track;
-        printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
-        print  O "\\Large\n";
-        printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
-        printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
-        printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
-        printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
-        print  O "\\end{textblock*}\n";
-        $r = 3;  
-    }
-    else {
-        
-        if (++$r >= 3 ) {
-          print O "\\null\\newpage\n\n";
-          $r = $c = 0;
-          $printlogo = 1;
-        }
-        if ($printlogo) {
-          printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",50, $x1 ,($y1 + $r * 90 );;
-          printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
-          printf O "\\par %s\\\\ %s\n",$loc,$LOCATIONS->{$loc}->{country};
-          print  O "\\end{textblock*}\n";
-          $printlogo = 0;
-        }
-        $c = 1;
-        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$bs,( $x1 + 60 ),($y1 + $r * 90 );
-        printf O "\\fbox{\\includegraphics[width=%dmm,height=%dmm,keepaspectratio]{PT/%s.pdf}}\n",$bs,$bs, $trackid;
-        print  O "\\end{textblock*}\n";
-        printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",40,( $x1 + 60 + $bs +5 ),($y1 + $r * 90 );
-        printf O "%s\n",$track;
-        printf O "\\par %s\n",$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
-        print  O "\\Large\n";
-        printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
-        printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
-        printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
-        printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
-        print  O "\\end{textblock*}\n";
-    }
+
+    $page++;
+    $PAGE{$trackid} = $page;
+    $r = $c = 0;
+    # logo
+    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",50, $x1, $y1;
+    printf O "\\includegraphics[width=%dmm]{LG/%s}\n",50,$LOCATIONS->{$loc}->{img};
+    print  O "\\end{textblock*}\n";
+
+    # title
+    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",130, $x1+55, $y1;
+    printf O "{\\fontsize{20}{20}\\selectfont %s\\\\}\n",$track;
+    printf O "{\\fontsize{16}{16}\\selectfont %s\\hfill %s\\\\}\n",$loc,$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}};
+    printf O "{\\fontsize{12}{12}\\selectfont %s\\\\}\n",$LOCATIONS->{$loc}->{country};
+    print  O "\\end{textblock*}\n";
+    
+    my $wd = 185; my $ht = 210;
+    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",$wd,( $x1 ),($y1+55 );
+    print  O "\\centering\n";
+    printf O "\\mbox{\\includegraphics[width=%dmm,height=%dmm,keepaspectratio]{PT/%s.pdf}}\n", $wd, $ht, $trackid;
+    print  O "\\end{textblock*}\n";
+    
+    printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",40,( $x1 + 60 + $bs + 5 ),($y1 + 20);
+    print  O "\\Large\n";
+    printf O "\\par\$\\mapsto\$ %s mi.\n",$TRACKS->{$loc}->{$trackid}->{mi};
+    printf O "\\par\$\\mapsto\$ %s km\n",$TRACKS->{$loc}->{$trackid}->{km};
+    printf O "\\par\$\\looparrowright\$ %s\n",$TRACKS->{$loc}->{$trackid}->{turns};
+    printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
+    print  O "\\end{textblock*}\n";
+
     printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",20,200,5;
     printf O "\\fbox{\\thepage}\n";
+    printf O "\\phantomsection\\label{$trackid}\n";
     print  O "\\end{textblock*}\n";
     printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",20,200,285;
     printf O "\\fbox{\\thepage}\n";
     print  O "\\end{textblock*}\n";
-
+    print  O "\n\\null\\newpage\n";
   }
 }
+close O;
+
+open O,'>','all-toc.tex' or die "$?:$!";
+
+
+print O "\\begin{compactitem}\n";
+for my $loc (sort @LOCATIONS) {
+  printf O "\\item $loc\n";
+  print O " \\begin{compactitem}\n";
+  for my $trackid ( sort keys %{$TRACKS->{$loc}} ) {
+    print O " \\item \\hyperref[$trackid]{$TRACKS->{$loc}->{$trackid}->{name}\\dotfill}";
+    print O " \$\\mapsto\$\\makebox[12mm][r]{$TRACKS->{$loc}->{$trackid}->{km}}\\,km / \n";
+    print O " \\makebox[12mm][r]{$TRACKS->{$loc}->{$trackid}->{mi}}\\,mi \n";
+    print O " \\makebox[10mm][r]{$TRACKS->{$loc}->{$trackid}->{turns}} \$\\looparrowright\$ \n";
+    print O " \\makebox[15mm][c]{$TYPEMAP{$TRACKS->{$loc}->{$trackid}->{type}}}";
+    print O " \\makebox[10mm][r]{\\pageref{$trackid}}\n";
+  }
+  print O " \\end{compactitem}\n";
+}
+print O "\\end{compactitem}\n";
 close O;
 exit;
 
