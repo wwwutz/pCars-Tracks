@@ -183,6 +183,16 @@ x.....x
 x.....x
 x.....x
 x.....x
+xx.x.xx
+x.x.x.x
+xx.x.xx
+xxxxxxx
+
+xxxxxxx
+x.....x
+x.....x
+x.....x
+x.....x
 x.x.x.x
 x.x.x.x
 x.x.x.x
