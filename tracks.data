@@ -4,15 +4,15 @@ ROUE.png//Rouen Les Essarts/France
 MOJA.png//Mojave Desert/USA
 -/MOJASW/Mojave Sidewinder/C/1.65m/11/2015/3
 -/MOJACR/Mojave Cougar Ridge/C/3.45m/17/2015/3
--/MOJAGC/Mojave Gila Crest/C/2.15m/11/2015/3
+-/MOJAGC/Mojave Gila Crest/CC/2.15m/11/2015/3
 -/MOJABA/Mojave Boa Ascent/C/1.82m/17/2015/3
--/MOJACN/Mojave Coyote Noose/C/1.13m/3/2015/3
+-/MOJACN/Mojave Coyote Noose/CC/1.13m/3/2015/3
 RUPU.png//Ruapuna Park/New Zealand
--/RPGP/Ruapuna Park GP/C/3280.0/12/2015/1
--/RPOL/Ruapuna Park Outer Loop/C/1350.0/6/2015/1
--/RPAC/Ruapuna Park A Circuit/C/1190.0/6/2015/1
--/RPBC/Ruapuna Park B Circuit/C/1600.0/7/2015/1
--/RPCL/Ruapuna Park Club/C/2280.0/9/2015/1
+-/RPGP/Ruapuna Park GP/CC/3280.0/12/2015/1
+-/RPOL/Ruapuna Park Outer Loop/CC/1350.0/6/2015/1
+-/RPAC/Ruapuna Park A Circuit/CC/1190.0/6/2015/1
+-/RPBC/Ruapuna Park B Circuit/CC/1600.0/7/2015/1
+-/RPCL/Ruapuna Park Club/CC/2280.0/9/2015/1
 2015-05-20_00072.png//Azure Circuit/Monaco
 -2015-05-20_00001.png/AZCI/Azure Circuit/C/2.07m/19/2015/2
 2015-05-20_00073.png//Azure Coast/France
@@ -68,17 +68,17 @@ GLCN.png//Glencairn/Scotland
 -2015-05-20_00028.png/HONA/Hockenheim National/C/2.29m/16/2015/2
 -2015-05-20_00029.png/HOSH/Hockenheim Short/C/1.63m/14/2015/2
 2015-05-20_00083.png//Imola/Italy
--2015-05-20_00030.png/IMOL/Imola/C/3.05m/17/2015/3
+-2015-05-20_00030.png/IMOL/Imola/CC/3.05m/17/2015/3
 2015-05-20_00084.png//Circuit des 24 Heures du Mans/France
--2015-05-20_00031.png/CIDUMA/Circuit des 24 Heures du Mans/C/8.46m/38/2015/3
+-2015-05-20_00031.png/CIDUMA/Circuit des 24 Heures du Mans/CC/8.46m/38/2015/3
 -2015-05-20_00032.png/LECIBU/Le Circuit Bugatti/C/2.65m/10/2015/2
 2015-05-20_00085.png//Mazda Raceway Laguna Seca/USA
--2015-05-21_00001.png/MRLASE/Mazda Raceway Laguna Seca/C/2.23m/11/2015/2
+-2015-05-21_00001.png/MRLASE/Mazda Raceway Laguna Seca/CC/2.23m/11/2015/2
 2015-05-20_00086.png//Autodromo Nazionale Monza/Italy
 -2015-05-20_00034.png/ANMOGP/Autodromo Nazionale Monza GP/C/3.59m/11/2015/2
 -2015-05-20_00035.png/ANMOSH/Autodromo Nazionale Monza Short/C/1.52m/6/2015/2
 2015-05-20_00087.png//Bathurst/Australia
--2015-05-20_00036.png/BA/Mount Panorama/C/3.86m/23/2015/2
+-2015-05-20_00036.png/BA/Mount Panorama/CC/3.86m/23/2015/2
 2015-05-20_00088.png//Nordschleife/Germany
 -2015-05-20_00037.png/NO/Nordschleife/C/12.94m/73/2015/3
 -2015-05-20_00038.png/NOS1/Nordschleife Stage 1/P/4.29m/36/2015/3
@@ -109,11 +109,11 @@ GLCN.png//Glencairn/Scotland
 -/SICL/Silverstone Classic/C/2.92m/9/1974/3
 -2015-05-20_00057.png/SIIN/Silverstone International/C/2.24m/10/2015/2
 -2015-05-20_00058.png/SINA/Silverstone National/C/1.63m/6/2015/1
--2015-05-20_00059.png/SIST/Silverstone Stowe/C/0.79m/16/2015/1
+-2015-05-20_00059.png/SIST/Silverstone Stowe/CC/0.79m/16/2015/1
 2015-05-20_00095.png//Snetterton/United Kingdom
 -2015-05-20_00060.png/SN300/Snetterton 300/C/2.96m/13/2015/3
 -2015-05-20_00061.png/SN200/Snetterton 200/C/2.00m/8/2015/2
--2015-05-20_00062.png/SN100/Snetterton 100/C/0.98m/6/2015/1
+-2015-05-20_00062.png/SN100/Snetterton 100/CC/0.98m/6/2015/1
 2015-05-20_00096.png//Sonoma Raceway/USA
 -2015-05-20_00063.png/SORASH/Sonoma Raceway Short/C/1.94m/15/2015/2
 -2015-05-20_00064.png/SORANA/Sonoma Raceway National/C/2.29m/17/2015/2

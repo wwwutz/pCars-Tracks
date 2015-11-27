@@ -87,9 +87,10 @@ close O;
 # pages
 #
 my %TYPEMAP = (
- 'C' => '\huge$\circlearrowleft$',
- 'P' => 'A $\rightsquigarrow$ B',
- 'K' => '$\circledcirc\llcorner^{\rightthreetimes}\circledcirc$',
+ 'C'  => '\Large$\circlearrowright$',
+ 'CC' => '\Large$\circlearrowleft$',
+ 'P'  => 'A $\rightsquigarrow$ B',
+ 'K'  => '$\circledcirc\llcorner^{\rightthreetimes}\circledcirc$',
 );
 open O,'>','all-tracks.tex' or die "$?:$!";
 my $r = 3;
