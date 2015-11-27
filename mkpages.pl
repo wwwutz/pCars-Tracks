@@ -87,9 +87,10 @@ close O;
 # pages
 #
 my %TYPEMAP = (
- 'C' => '\huge$\circlearrowleft$',
- 'P' => 'A $\rightsquigarrow$ B',
- 'K' => '$\circledcirc\llcorner^{\rightthreetimes}\circledcirc$',
+ 'C'  => '\Large$\circlearrowright$',
+ 'CC' => '\Large$\circlearrowleft$',
+ 'P'  => 'A $\rightsquigarrow$ B',
+ 'K'  => '$\circledcirc\llcorner^{\rightthreetimes}\circledcirc$',
 );
 open O,'>','all-tracks.tex' or die "$?:$!";
 my $r = 3;
@@ -178,6 +179,16 @@ sub incgra {
 
 
 __DATA__
+xxxxxxx
+x.....x
+x.....x
+x.....x
+x.....x
+xx.x.xx
+x.x.x.x
+xx.x.xx
+xxxxxxx
+
 xxxxxxx
 x.....x
 x.....x
