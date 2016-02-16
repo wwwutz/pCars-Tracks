@@ -4,16 +4,10 @@
 \usepackage{calc}
 \usepackage{fancyvrb}
 \pagestyle{empty}
-\usepackage[utf8]{inputenc}
-\usepackage{array}
-\inputencoding{utf8}
-%\usepackage[absolute,showboxes]{textpos}
 \usepackage[absolute]{textpos}
-\usepackage{amssymb}
-
 \usepackage[]{eso-pic}[2002/11/16]
-
 \usepackage{fancybox} % fuer Oval...
+\renewcommand\familydefault{\sfdefault}
 
 %
 % TOC stuff
@@ -29,6 +23,11 @@
 \addtolength{\oddsidemargin}{-1in}
 \addtolength{\evensidemargin}{-1in}
 \setlength{\parindent}{0pt}
+
+\newlength{\HT}
+% ICON{name}{reftext for size}
+\newcommand*{\ICON}[2]{\settoheight{\HT}{\hbox{#2}}\fbox{\includegraphics[height=\HT,keepaspectratio]{icons/#1.pdf}}}
+
 
 \begin{document}
 \fontfamily{phv}\selectfont
