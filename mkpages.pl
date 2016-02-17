@@ -19,7 +19,7 @@ while (<I>) {
     /^\s*$/ and next;
     if (/^\-(.*)/) {
       my ($f,$trackid,@r) = split(/\//,$1);
-      map { $TRACKS->{$loc}->{$trackid}->{$_} = shift @r } qw( name type miles turns year size );
+      map { $TRACKS->{$loc}->{$trackid}->{$_} = shift @r } qw( name type miles turns year size cars );
       $TRACKS->{$loc}->{$trackid}{img} = $f;
       my ($l,$m) = $TRACKS->{$loc}->{$trackid}->{miles} =~ m/(\d+\.\d+)(m?)/;
       my ( $km, $mi );
@@ -34,7 +34,7 @@ while (<I>) {
       }
       $TRACKS->{$loc}->{$trackid}->{km} = sprintf("%0.2f",$km);
       $TRACKS->{$loc}->{$trackid}->{mi} = sprintf("%0.2f",$mi);
-      die "$_" unless defined($TRACKS->{$loc}->{$trackid}->{size});
+      die "$_" unless defined($TRACKS->{$loc}->{$trackid}->{cars});
     }
     else {
       my ($f,$nada,$location,$country) = split(/\//,$_);
@@ -93,7 +93,9 @@ my %ICONTYPE = (
  'K'  => 'kart',
  'T'  => 'kurve',
  'D'  => 'fromtoarrow',
- 'L'  => 'fa-arrows-h',
+ 'L'  => 'fa-location-arrow',
+ 'CAR'=> 'fa-car',
+ 'R'  => 'fa-road',
 );
 
 my %ICON = map { $_ => '\ICON{'.$ICONTYPE{$_}.'}{X}'} keys %ICONTYPE;
@@ -148,6 +150,7 @@ for my $loc (sort @LOCATIONS) {
     print  O "\\Large\n";
     printf O "\\par$ICON{D} \\textatop{%s mi.}{%s km}\n",$TRACKS->{$loc}->{$trackid}->{mi},$TRACKS->{$loc}->{$trackid}->{km};
     printf O "\\par%s $ICON{T}\n",$TRACKS->{$loc}->{$trackid}->{turns};
+    printf O "\\par%s $ICON{CAR}\n",$TRACKS->{$loc}->{$trackid}->{cars};
     printf O "\\par\\hfill\\tiny\\tt %s\\\\\n",$trackid;
     print  O "\\end{textblock*}\n";
 
@@ -165,24 +168,25 @@ for my $loc (sort @LOCATIONS) {
 close O;
 
 open O,'>','all-toc.tex' or die "$?:$!";
-
-
-print O "\\begin{compactitem}\n";
+print  O '\setlength\LTleft{0pt} \setlength\LTright{0pt}'."\n";
+print  O '\begin{longtable}{llrrcccc}'."\n";
+printf O $ICON{L}.' & '.$ICON{R}.' & \multicolumn{2}{c}{'.$ICON{D}.'} & '.$ICON{T}.' & '.$ICON{CAR}.' &  &  \\endhead'."\n";
 for my $loc (sort @LOCATIONS) {
-  printf O "\\item $loc\n";
-  print O " \\begin{compactitem}\n";
+  printf O '\multicolumn{2}{l}{%s}'."\\\\\n",$loc;
   for my $trackid ( sort keys %{$TRACKS->{$loc}} ) {
-    print O " \\item \\hyperref[$trackid]{$TRACKS->{$loc}->{$trackid}->{name}\\dotfill}";
-    print O " $ICON{D}\\makebox[12mm][r]{$TRACKS->{$loc}->{$trackid}->{km}}\\,km / \n";
-    print O " \\makebox[12mm][r]{$TRACKS->{$loc}->{$trackid}->{mi}}\\,mi \n";
-    print O " \\makebox[10mm][r]{$TRACKS->{$loc}->{$trackid}->{turns}}\\,$ICON{T} \n";
-    print O " \\makebox[15mm][c]{$ICON{$TRACKS->{$loc}->{$trackid}->{type}}}";
-    print O " \\makebox[10mm][r]{\\pageref{$trackid}}\n";
+    print O "\\hspace{1cm} & \\hyperref[$trackid]{$TRACKS->{$loc}->{$trackid}->{name}\\dotfill}";
+    print O " & $TRACKS->{$loc}->{$trackid}->{km}\\,km ";
+    print O " & $TRACKS->{$loc}->{$trackid}->{mi}\\,mi ";
+    print O " & $TRACKS->{$loc}->{$trackid}->{turns} ";
+    print O " & $TRACKS->{$loc}->{$trackid}->{cars} ";
+    print O " & $ICON{$TRACKS->{$loc}->{$trackid}->{type}} ";
+    print O " & \\pageref{$trackid} ";
+    print O "\\\\\n";
   }
-  print O " \\end{compactitem}\n";
 }
-print O "\\end{compactitem}\n";
+print O "\\end{longtable}\n";
 close O;
+
 exit;
 
 sub incgra {
