@@ -3,8 +3,10 @@
 \usepackage{graphicx}
 \usepackage{calc}
 \usepackage{fancyvrb}
+\usepackage[utf8]{inputenc}
 \pagestyle{empty}
 \usepackage[absolute]{textpos}
+% \usepackage[grid,texcoord]{eso-pic}[2002/11/16]
 \usepackage[]{eso-pic}[2002/11/16]
 \usepackage{fancybox} % fuer Oval...
 \renewcommand\familydefault{\sfdefault}
@@ -15,7 +17,7 @@
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage{paralist}
 
-%\usepackage{showframe}
+% \usepackage{showframe}
 
 \setlength{\textheight}{24cm}
 \addtolength{\headsep}{-1in}
@@ -26,8 +28,11 @@
 
 \newlength{\HT}
 % ICON{name}{reftext for size}
-\newcommand*{\ICON}[2]{\settoheight{\HT}{\hbox{#2}}\fbox{\includegraphics[height=\HT,keepaspectratio]{icons/#1.pdf}}}
+\newcommand*{\ICON}[2]{\settoheight{\HT}{\hbox{#2}}\mbox{\includegraphics[height=\HT,keepaspectratio]{icons/#1.pdf}}}
 
+\makeatletter
+\newcommand*{\textatop}[2]{$\hbox{#1}\atop\hbox{#2}\m@th$}
+\makeatother
 
 \begin{document}
 \fontfamily{phv}\selectfont
@@ -44,11 +49,11 @@
 \end{textblock*}
 
 \begin{textblock*}{90mm}(120mm,275mm)%
-\begin{center}\Huge{v9.0 / 15. Feb 2016}\end{center}
+\begin{center}\Huge{v9.0 / 17. Feb 2016}\end{center}
 \end{textblock*}
 
-\begin{textblock*}{90mm}(0mm,275mm)%
-\begin{center}\tt{https://github.com/wwwutz/pCars-Tracks}\end{center}
+\begin{textblock*}{90mm}(10mm,275mm)%
+\begin{center}\ICON{fa-github}{X} \tt{https://github.com/wwwutz/pCars-Tracks}\end{center}
 \end{textblock*}
 
 \include{logos-fp}
