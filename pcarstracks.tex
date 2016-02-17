@@ -3,25 +3,22 @@
 \usepackage{graphicx}
 \usepackage{calc}
 \usepackage{fancyvrb}
-\pagestyle{empty}
 \usepackage[utf8]{inputenc}
-\usepackage{array}
-\inputencoding{utf8}
-%\usepackage[absolute,showboxes]{textpos}
+\pagestyle{empty}
 \usepackage[absolute]{textpos}
-\usepackage{amssymb}
-
+% \usepackage[grid,texcoord]{eso-pic}[2002/11/16]
 \usepackage[]{eso-pic}[2002/11/16]
-
 \usepackage{fancybox} % fuer Oval...
+\renewcommand\familydefault{\sfdefault}
 
 %
 % TOC stuff
 %
 \usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage{paralist}
+\usepackage{longtable}
 
-%\usepackage{showframe}
+% \usepackage{showframe}
 
 \setlength{\textheight}{24cm}
 \addtolength{\headsep}{-1in}
@@ -29,6 +26,14 @@
 \addtolength{\oddsidemargin}{-1in}
 \addtolength{\evensidemargin}{-1in}
 \setlength{\parindent}{0pt}
+
+\newlength{\HT}
+% ICON{name}{reftext for size}
+\newcommand*{\ICON}[2]{\settoheight{\HT}{\hbox{#2}}\mbox{\includegraphics[height=\HT,keepaspectratio]{icons/#1.pdf}}}
+
+\makeatletter
+\newcommand*{\textatop}[2]{$\hbox{#1}\atop\hbox{#2}\m@th$}
+\makeatother
 
 \begin{document}
 \fontfamily{phv}\selectfont
@@ -41,15 +46,15 @@
 \end{textblock*}
 
 \begin{textblock*}{\Logo}(30mm,125mm)%
-\begin{center}\Huge{Project CARS Tracks}\end{center}
+\begin{center}\includegraphics[height=15mm,keepaspectratio]{icons/project-cars.pdf} \Huge{Tracks}\end{center}
 \end{textblock*}
 
-\begin{textblock*}{90mm}(120mm,275mm)%
-\begin{center}\Huge{v8.1 / 29. Jan 2016}\end{center}
+\begin{textblock*}{90mm}(120mm,270mm)%
+\begin{center}\textatop{\Huge{v9.0 / 17. Feb 2016}}{\small{based on \ICON{project-cars}{\rule{0pt}{6mm}} 9.0.0.0.1174}}\end{center}
 \end{textblock*}
 
-\begin{textblock*}{90mm}(0mm,275mm)%
-\begin{center}\tt{https://github.com/wwwutz/pCars-Tracks}\end{center}
+\begin{textblock*}{90mm}(10mm,270mm)%
+\begin{center}\ICON{fa-github}{X} \tt{https://github.com/wwwutz/pCars-Tracks}\end{center}
 \end{textblock*}
 
 \include{logos-fp}
