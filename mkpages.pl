@@ -125,7 +125,7 @@ for my $loc (sort @LOCATIONS) {
     print  O "\\end{textblock*}\n";
 
     printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",120, $x1+55, $y1+10;
-    printf O "{\\fontsize{16}{16}\\selectfont %s\}\\\\\n",$loc;
+    printf O "{\\fontsize{16}{16}\\selectfont %s / %s\}\\\\\n",$loc,,$TRACKS->{$loc}->{$trackid}->{year};
     print  O "\\end{textblock*}\n";
 
     printf O "\\begin{textblock*}{%dmm}(%dmm,%dmm)%%\n",120, $x1+55, $y1+20;
